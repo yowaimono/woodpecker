@@ -36,6 +36,23 @@
             }
         },
         "pipeline": {
+      "kind": {
+        "ci": "CI",
+        "cd": "CD",
+        "unknown": "未分類",
+        "ci_description": "CI · 持續整合",
+        "cd_description": "CD · 持續交付／部署",
+        "unknown_description": "尚未識別流水線類型",
+        "description": "{kind}：{reason}",
+        "reasons": {
+          "deployment": "存在部署事件或目標環境。",
+          "release": "根據發佈事件推斷，實際行為以流水線設定為準。",
+          "production_tag": "根據我們約定的 prod-v* 正式發佈標籤推斷。",
+          "pull_request": "根據 PR 事件推斷，實際行為以流水線設定為準。",
+          "push": "根據推送事件推斷，實際行為以流水線設定為準。",
+          "unknown": "目前資訊不足以區分 CI 和 CD；一般標籤、排程及手動任務不做預設分類。"
+        }
+      },
             "actions": {
                 "cancel": "取消",
                 "restart": "重新啟動",

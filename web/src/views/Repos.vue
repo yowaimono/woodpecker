@@ -7,6 +7,7 @@
     <template #headerActions>
       <Button
         :to="{ name: 'repo-add' }"
+        color="blue"
         start-icon="plus"
         :title="$t('repo.add')"
         :aria-label="$t('repo.add')"
@@ -26,7 +27,7 @@
       <div v-if="search === '' && repos.length > 0" class="grid gap-8">
         <div v-if="reposLastAccess.length > 0 && repos.length > 4" class="flex flex-col gap-4">
           <div>
-            <h2 class="text-wp-text-100 text-lg">{{ $t('repositories.last.title') }}</h2>
+            <h2 class="text-wp-text-200 text-lg font-semibold">{{ $t('repositories.last.title') }}</h2>
             <span class="text-wp-text-alt-100">{{ $t('repositories.last.desc') }}</span>
           </div>
           <div class="grid grid-cols-1 gap-4 md:grid-cols-2 lg:grid-cols-2">
@@ -36,7 +37,7 @@
 
         <div class="flex flex-col gap-4">
           <div>
-            <h2 class="text-wp-text-100 text-lg">{{ $t('repositories.all.title') }}</h2>
+            <h2 class="text-wp-text-200 text-lg font-semibold">{{ $t('repositories.all.title') }}</h2>
             <span class="text-wp-text-alt-100">{{ $t('repositories.all.desc') }}</span>
           </div>
           <div class="flex flex-col gap-4">

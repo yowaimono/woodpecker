@@ -2,10 +2,12 @@
   <router-link
     v-if="repo"
     :to="{ name: 'repo', params: { repoId: repo.id } }"
-    class="border-wp-background-400 dark:border-wp-background-100 bg-wp-background-200 dark:bg-wp-background-200 hover:bg-wp-control-neutral-100 dark:hover:bg-wp-control-neutral-200 flex cursor-pointer flex-col overflow-hidden rounded-md border p-4"
+    class="border-wp-background-400 dark:border-wp-background-100 bg-wp-background-100 dark:bg-wp-background-200 hover:bg-wp-control-neutral-200 dark:hover:bg-wp-control-neutral-200 hover:border-wp-control-info-100 flex cursor-pointer flex-col overflow-hidden rounded-md border p-4 transition-colors"
   >
     <div class="grid grid-cols-[auto_1fr] items-center gap-y-4">
-      <div class="text-wp-text-100 text-lg">{{ `${repo.owner} / ${repo.name}` }}</div>
+      <div class="text-wp-text-200 min-w-0 text-base font-semibold break-words">
+        {{ `${repo.owner} / ${repo.name}` }}
+      </div>
       <div class="text-wp-text-100 ml-auto">
         <div
           v-if="repo.visibility === RepoVisibility.Private"
@@ -25,6 +27,7 @@
         <template v-if="lastPipeline">
           <div class="flex min-w-0 flex-1 items-center gap-x-1">
             <PipelineStatusIcon v-if="lastPipeline" :status="lastPipeline.status" />
+            <PipelineKindChip :pipeline="lastPipeline" class="ml-1" />
             <RenderMarkdown
               class="overflow-hidden pl-1 text-ellipsis whitespace-nowrap"
               :title="message"
@@ -52,6 +55,7 @@ import { computed } from 'vue';
 
 import Icon from '~/components/atomic/Icon.vue';
 import RenderMarkdown from '~/components/atomic/RenderMarkdown.vue';
+import PipelineKindChip from '~/components/repo/pipeline/PipelineKindChip.vue';
 import PipelineStatusIcon from '~/components/repo/pipeline/PipelineStatusIcon.vue';
 import usePipeline from '~/compositions/usePipeline';
 import type { Repo } from '~/lib/api/types';

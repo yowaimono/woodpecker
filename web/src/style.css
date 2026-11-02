@@ -4,25 +4,40 @@
 :root[data-theme='light'] {
   color-scheme: light;
 
+  --wp-kind-ci-background: #edf2ff;
+  --wp-kind-ci-border: #c8d6ff;
+  --wp-kind-ci-text: #244bd1;
+  --wp-kind-cd-background: #f5f0ff;
+  --wp-kind-cd-border: #ddd0ff;
+  --wp-kind-cd-text: #6d28d9;
+  --wp-kind-unknown-background: #f1f5f9;
+  --wp-kind-unknown-border: #cbd5e1;
+  --wp-kind-unknown-text: #475569;
+
+  --wp-canvas: #f7f9ff;
+  --wp-accent: var(--color-int-wp-primary-400);
+  --wp-accent-soft: #edf2ff;
+  --wp-focus-ring: #a8bdff;
+
   --wp-background-100: var(--color-white);
-  --wp-background-200: var(--color-gray-50);
-  --wp-background-300: var(--color-gray-200);
-  --wp-background-400: var(--color-gray-300);
+  --wp-background-200: #f7f9ff;
+  --wp-background-300: #edf1fa;
+  --wp-background-400: #dce3f0;
   --wp-background-500: var(--color-gray-400);
 
-  --wp-text-100: var(--color-gray-600);
-  --wp-text-200: var(--color-gray-700);
-  --wp-text-alt-100: var(--color-gray-500);
+  --wp-text-100: #475569;
+  --wp-text-200: #172b4d;
+  --wp-text-alt-100: #64748b;
 
   --wp-primary-100: var(--color-int-wp-primary-300);
   --wp-primary-200: var(--color-int-wp-primary-400);
   --wp-primary-300: var(--color-int-wp-primary-500);
   --wp-primary-text-100: var(--color-white);
 
-  --wp-control-neutral-100: var(--color-gray-100);
-  --wp-control-neutral-200: var(--color-gray-200);
-  --wp-control-neutral-300: var(--color-gray-300);
-  --wp-control-neutral-400: var(--color-gray-400);
+  --wp-control-neutral-100: var(--color-white);
+  --wp-control-neutral-200: #edf2ff;
+  --wp-control-neutral-300: #cfd9ec;
+  --wp-control-neutral-400: var(--color-int-wp-primary-400);
 
   --wp-control-info-100: var(--color-int-wp-control-info-100);
   --wp-control-info-200: var(--color-int-wp-control-info-200);
@@ -56,12 +71,27 @@
   --wp-code-text-100: var(--color-gray-200);
   --wp-code-text-alt-100: var(--color-gray-300);
 
-  --wp-link-100: var(--color-blue-600);
-  --wp-link-200: var(--color-blue-700);
+  --wp-link-100: var(--color-int-wp-primary-400);
+  --wp-link-200: var(--color-int-wp-primary-500);
 }
 
 :root[data-theme='dark'] {
   color-scheme: dark;
+
+  --wp-kind-ci-background: #202c48;
+  --wp-kind-ci-border: #3d568c;
+  --wp-kind-ci-text: #a8bdff;
+  --wp-kind-cd-background: #322143;
+  --wp-kind-cd-border: #61427d;
+  --wp-kind-cd-text: #d8b4fe;
+  --wp-kind-unknown-background: #252a32;
+  --wp-kind-unknown-border: #4b5563;
+  --wp-kind-unknown-text: #cbd5e1;
+
+  --wp-canvas: var(--color-int-wp-secondary-500);
+  --wp-accent: #91adff;
+  --wp-accent-soft: #202c48;
+  --wp-focus-ring: #567dff;
 
   --wp-background-100: var(--color-int-wp-secondary-300);
   --wp-background-200: var(--color-int-wp-secondary-400);
@@ -177,4 +207,25 @@ code:not(pre > code) {
 .code-box-log {
   @apply bg-wp-code-300 text-wp-code-text-100 p-4 break-words;
   white-space: pre-wrap;
+}
+
+/* Shared keyboard treatment follows the blue brand without changing status colors. */
+:where(a, button, input, textarea, select, [tabindex]):focus-visible {
+  outline: 2px solid var(--wp-focus-ring);
+  outline-offset: 3px;
+}
+
+:where(input, textarea, select) {
+  accent-color: var(--wp-accent);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
 }

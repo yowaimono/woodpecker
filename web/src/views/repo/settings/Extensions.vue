@@ -48,7 +48,7 @@
           :description="$t('extension_netrc_desc')"
         />
       </InputField>
-      <Button :is-loading="isSaving" color="green" type="submit" :text="$t('save')" />
+      <Button :is-loading="isSaving" color="blue" type="submit" :text="$t('save')" />
     </form>
   </Settings>
 </template>

@@ -1,5 +1,5 @@
 <template>
-  <header class="text-wp-text-100" :class="{ 'md:px-4': fullWidth }">
+  <header class="bg-wp-background-100 text-wp-text-100" :class="{ 'md:px-4': fullWidth }">
     <Container :full-width="fullWidth" class="relative py-0!">
       <div class="border-wp-background-400 dark:border-wp-background-100 border-b">
         <div class="flex w-full flex-col gap-2 py-3 md:flex-row md:items-center md:justify-between md:gap-10">
@@ -16,7 +16,7 @@
               class="md:display-unset mr-2 hidden h-8 w-8 shrink-0 md:justify-between"
               @click="goBack"
             />
-            <h1 class="text-wp-text-100 flex min-w-0 items-center gap-x-2 text-xl">
+            <h1 class="text-wp-text-200 flex min-w-0 items-center gap-x-2 text-xl font-semibold">
               <slot name="title" />
             </h1>
           </div>

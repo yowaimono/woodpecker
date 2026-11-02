@@ -5,9 +5,9 @@
       v-for="tab in visibleTabs"
       :key="tab.title"
       :to="tab.to"
-      class="text-wp-text-100 flex cursor-pointer items-center border-b-2 border-transparent py-1 whitespace-nowrap"
-      :active-class="tab.matchChildren ? 'border-wp-text-100!' : ''"
-      :exact-active-class="tab.matchChildren ? '' : 'border-wp-text-100!'"
+      class="text-wp-text-100 flex cursor-pointer items-center border-b-2 border-transparent py-1 whitespace-nowrap transition-colors"
+      :active-class="tab.matchChildren ? 'border-wp-control-info-100! text-wp-link-100!' : ''"
+      :exact-active-class="tab.matchChildren ? '' : 'border-wp-control-info-100! text-wp-link-100!'"
     >
       <span
         class="hover:bg-wp-control-neutral-100 dark:hover:bg-wp-control-neutral-200 flex w-full min-w-20 flex-row items-center justify-center gap-2 rounded-md px-2 py-1"

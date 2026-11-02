@@ -123,7 +123,7 @@
           <Button
             :is-loading="isSaving"
             type="submit"
-            color="green"
+            color="blue"
             :text="isEditingUser ? $t('admin.settings.users.save') : $t('admin.settings.users.add')"
           />
         </div>

@@ -1,9 +1,9 @@
 <template>
-  <div class="app bg-wp-background-100 dark:bg-wp-background-300 m-auto flex h-full w-full flex-col">
+  <div class="app text-wp-text-100 m-auto flex h-full w-full flex-col">
     <router-view v-if="layout === 'blank'" />
     <template v-else>
       <Navbar />
-      <main class="relative flex h-full min-h-0">
+      <main class="relative flex h-full min-h-0 overflow-hidden">
         <div id="scroll-component" class="flex grow flex-col overflow-y-auto">
           <router-view />
         </div>
@@ -56,6 +56,7 @@ watch(
 
 <style scoped>
 .app {
+  background: var(--wp-canvas);
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 }

@@ -224,6 +224,23 @@
       }
     },
     "pipeline": {
+      "kind": {
+        "ci": "CI",
+        "cd": "CD",
+        "unknown": "Unclassified",
+        "ci_description": "CI · Continuous integration",
+        "cd_description": "CD · Continuous delivery / deployment",
+        "unknown_description": "Pipeline type not identified",
+        "description": "{kind} — {reason}",
+        "reasons": {
+          "deployment": "Deployment event or target environment.",
+          "release": "Inferred from a release event; actual behavior depends on the workflow configuration.",
+          "production_tag": "Inferred from our prod-v* production tag convention.",
+          "pull_request": "Inferred from a pull request event; actual behavior depends on the workflow configuration.",
+          "push": "Inferred from a push event; actual behavior depends on the workflow configuration.",
+          "unknown": "Insufficient metadata to distinguish CI from CD. No classification is assumed for arbitrary tags, scheduled or manual runs."
+        }
+      },
       "tasks": "Tasks",
       "config": "Config",
       "files": "Changed files",

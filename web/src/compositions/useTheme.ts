@@ -7,6 +7,7 @@ const {
   system: systemTheme,
 } = useColorMode({
   storageKey: 'woodpecker:theme',
+  initialValue: 'light',
 });
 
 function updateTheme() {
@@ -19,7 +20,7 @@ function updateTheme() {
     document.documentElement.classList.remove('dark');
     document.documentElement.classList.add('light');
     document.documentElement.setAttribute('data-theme', 'light');
-    document.querySelector('meta[name=theme-color]')?.setAttribute('content', '#369943'); // internal-wp-primary-400
+    document.querySelector('meta[name=theme-color]')?.setAttribute('content', '#2d5cf6'); // brand blue (internal-wp-primary-400)
   }
 }
 

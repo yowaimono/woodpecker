@@ -276,6 +276,23 @@
         "not_allowed": "你没有权限访问这个仓库",
         "open_in_forge": "在代码托管平台中打开",
         "pipeline": {
+      "kind": {
+        "ci": "CI",
+        "cd": "CD",
+        "unknown": "未分类",
+        "ci_description": "CI · 持续集成",
+        "cd_description": "CD · 持续交付／部署",
+        "unknown_description": "尚未识别流水线类型",
+        "description": "{kind}：{reason}",
+        "reasons": {
+          "deployment": "存在部署事件或目标环境。",
+          "release": "根据发布事件推断，实际行为以流水线配置为准。",
+          "production_tag": "根据我们约定的 prod-v* 生产发布标签推断。",
+          "pull_request": "根据 PR 事件推断，实际行为以流水线配置为准。",
+          "push": "根据推送事件推断，实际行为以流水线配置为准。",
+          "unknown": "当前信息不足以区分 CI 和 CD；普通标签、定时及手动任务不做默认分类。"
+        }
+      },
             "actions": {
                 "cancel": "取消",
                 "cancel_success": "流水线已被取消",

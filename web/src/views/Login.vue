@@ -1,32 +1,47 @@
 <template>
-  <main class="flex h-full w-full flex-col items-center justify-center">
-    <Error v-if="errorMessage" class="w-full md:w-3xl">
-      <span class="whitespace-pre">{{ errorMessage }}</span>
-      <span v-if="errorDescription" class="mt-1 whitespace-pre">{{ errorDescription }}</span>
-      <a
-        v-if="errorUri"
-        :href="errorUri"
-        target="_blank"
-        class="text-wp-link-100 hover:text-wp-link-200 mt-1 cursor-pointer"
-      >
-        <span>{{ errorUri }}</span>
-      </a>
+  <main class="login-page flex min-h-full w-full flex-col items-center justify-center gap-4 px-4 py-8">
+    <Error v-if="errorMessage" class="w-full max-w-3xl">
+      <div class="flex min-w-0 flex-col gap-1 text-left">
+        <span class="break-words whitespace-pre-wrap">{{ errorMessage }}</span>
+        <span v-if="errorDescription" class="break-words whitespace-pre-wrap">{{ errorDescription }}</span>
+        <a
+          v-if="errorUri"
+          :href="errorUri"
+          target="_blank"
+          rel="noopener noreferrer"
+          class="cursor-pointer break-all text-white underline hover:opacity-80"
+        >
+          <span>{{ errorUri }}</span>
+        </a>
+      </div>
     </Error>
 
     <div
-      class="min-h-sm border-wp-background-400 dark:border-wp-background-100 bg-wp-background-100 dark:bg-wp-background-200 flex w-full flex-col overflow-hidden border md:m-8 md:w-3xl md:flex-row md:rounded-md"
+      class="login-card border-wp-background-400 bg-wp-background-100 dark:bg-wp-background-200 flex w-full max-w-3xl flex-col overflow-hidden rounded-lg border md:min-h-96 md:flex-row"
     >
-      <div class="bg-wp-primary-200 dark:bg-wp-primary-300 flex min-h-48 items-center justify-center md:w-3/5">
-        <WoodpeckerLogo preserveAspectRatio="xMinYMin slice" class="h-32 w-32 md:h-48 md:w-48" />
+      <div class="login-brand flex min-h-56 flex-col items-center justify-center gap-6 px-8 py-10 md:w-1/2">
+        <div class="bg-wp-control-info-100 flex h-24 w-24 items-center justify-center rounded-lg">
+          <WoodpeckerLogo preserveAspectRatio="xMinYMin slice" class="h-16 w-16" aria-hidden="true" />
+        </div>
+        <!-- eslint-disable-next-line @intlify/vue-i18n/no-raw-text -->
+        <span class="text-wp-link-100 text-2xl font-semibold">Woodpecker CI</span>
+        <div class="login-pipeline flex items-center" aria-hidden="true">
+          <span class="login-node"><Icon name="repo" /></span>
+          <span class="login-connector" />
+          <span class="login-node"><Icon name="status-success" /></span>
+          <span class="login-connector" />
+          <span class="login-node"><Icon name="deployment" /></span>
+        </div>
       </div>
-      <div class="flex min-h-48 flex-col items-center justify-center gap-4 p-4 text-center md:w-2/5">
-        <h1 class="text-wp-text-100 text-xl">{{ $t('login_to_woodpecker_with') }}</h1>
-        <div class="flex flex-col gap-2">
+      <div class="flex min-h-64 flex-col items-center justify-center gap-7 px-6 py-10 text-center md:w-1/2 md:px-8">
+        <h1 class="text-wp-text-200 text-xl leading-relaxed font-semibold">{{ $t('login_to_woodpecker_with') }}</h1>
+        <div class="flex w-full max-w-xs flex-col gap-3">
           <Button
             v-for="forge in forgesWithNameAndFavicon"
             :key="forge.id"
             :start-icon="forge.type === 'addon' ? 'repo' : forge.type"
-            class="whitespace-normal!"
+            color="blue"
+            class="min-h-11 justify-center gap-2 px-4 py-2.5 whitespace-normal!"
             @click="authenticate(forge.id)"
           >
             <div class="mr-2 w-4">
@@ -116,3 +131,31 @@ const forgesWithNameAndFavicon = computed(() =>
   }),
 );
 </script>
+
+<style scoped>
+.login-card {
+  box-shadow: 0 12px 40px rgb(23 43 77 / 5%);
+}
+
+.login-brand {
+  background: var(--wp-accent-soft);
+}
+
+.login-node {
+  display: flex;
+  width: 2.25rem;
+  height: 2.25rem;
+  align-items: center;
+  justify-content: center;
+  border: 1px solid var(--wp-control-neutral-300);
+  border-radius: 6px;
+  background: var(--wp-background-100);
+  color: var(--wp-accent);
+}
+
+.login-connector {
+  width: 2rem;
+  height: 1px;
+  background: var(--wp-control-neutral-300);
+}
+</style>
