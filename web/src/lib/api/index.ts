@@ -20,6 +20,7 @@ import type {
   User,
   WorkflowInfo,
 } from './types';
+import type { TeamActivityReport } from './types/teamActivity';
 
 export const DEFAULT_FORGE_ID = 1;
 
@@ -48,6 +49,11 @@ interface PaginationOptions {
 }
 
 export default class WoodpeckerClient extends ApiClient {
+  async getTeamActivity(days: number, repoId?: number): Promise<TeamActivityReport> {
+    const query = encodeQueryString({ days, repo_id: repoId });
+    return this._get(`/api/user/team-activity?${query}`) as Promise<TeamActivityReport>;
+  }
+
   async getRepoList(opts?: RepoListOptions): Promise<Repo[]> {
     const query = encodeQueryString(opts);
     return this._get(`/api/user/repos?${query}`) as Promise<Repo[]>;

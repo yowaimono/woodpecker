@@ -28,6 +28,14 @@
         <span class="flex md:hidden">{{ $t('repos') }}</span>
         <span class="hidden md:flex">{{ $t('repositories.title') }}</span>
       </router-link>
+      <router-link
+        v-if="user && userConfig.userConfig.value.showTeamTab"
+        :to="{ name: 'team-activity' }"
+        class="navbar-clickable navbar-link"
+        :class="{ 'navbar-link-active': route.name === 'team-activity' }"
+      >
+        {{ $t('team_activity.nav') }}
+      </router-link>
       <a
         href="https://woodpecker-ci.org/"
         target="_blank"

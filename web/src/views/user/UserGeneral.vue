@@ -30,6 +30,14 @@
       />
     </InputField>
 
+    <InputField :label="$t('team_activity.navigation_settings')">
+      <Checkbox
+        v-model="showTeamTab"
+        :label="$t('team_activity.show_tab')"
+        :description="$t('team_activity.show_tab_description')"
+      />
+    </InputField>
+
     <InputField :label="$t('user.settings.general.pipeline_logs.pipeline_logs')">
       <Checkbox
         v-model="collapseLogGroupsByDefault"
@@ -58,6 +66,15 @@ import { useWPTitle } from '~/compositions/useWPTitle';
 const { locale, t } = useI18n();
 const { storeTheme } = useTheme();
 const { userConfig, setUserConfig } = useUserConfig();
+
+const showTeamTab = computed<boolean>({
+  get() {
+    return userConfig.value.showTeamTab;
+  },
+  set(value) {
+    setUserConfig('showTeamTab', value);
+  },
+});
 
 const collapseLogGroupsByDefault = computed<boolean>({
   get() {
