@@ -284,34 +284,125 @@
             </li>
           </ul>
           <div v-else class="chart-empty">{{ t('team_activity.no_records') }}</div>
-          <button
-            v-if="summary.events.length > recentLimit"
-            class="more-events"
-            type="button"
-            @click="recentLimit += 8"
+          <nav
+            v-if="summary.events.length"
+            class="recent-pagination"
+            :aria-label="t('team_activity.recent_pagination')"
           >
-            {{ t('team_activity.load_more') }}
-          </button>
+            <span
+              class="pagination-range"
+              aria-live="polite"
+              v-text="
+                t('team_activity.record_range', {
+                  start: (recentPage - 1) * recentPageSize + 1,
+                  end: Math.min(recentPage * recentPageSize, summary.events.length),
+                  total: summary.events.length,
+                })
+              "
+            />
+            <div class="pagination-controls">
+              <button
+                type="button"
+                :disabled="recentPage === 1"
+                :aria-label="t('team_activity.previous_page')"
+                :title="t('team_activity.previous_page')"
+                @click="recentPage--"
+              >
+                <Icon name="back" />
+              </button>
+              <template v-for="(page, index) in recentPageNumbers" :key="page">
+                <span
+                  v-if="index > 0 && page - recentPageNumbers[index - 1] > 1"
+                  class="pagination-ellipsis"
+                  aria-hidden="true"
+                  v-text="paginationEllipsis"
+                />
+                <button
+                  type="button"
+                  :aria-current="recentPage === page ? 'page' : undefined"
+                  :aria-label="t('team_activity.go_to_page', { page })"
+                  @click="recentPage = page"
+                  v-text="number(page)"
+                />
+              </template>
+              <button
+                type="button"
+                :disabled="recentPage === recentPageCount"
+                :aria-label="t('team_activity.next_page')"
+                :title="t('team_activity.next_page')"
+                @click="recentPage++"
+              >
+                <Icon name="chevron-right" />
+              </button>
+            </div>
+          </nav>
         </section>
-        <section class="team-panel scope-panel" :aria-label="t('team_activity.methodology')">
+        <section class="team-panel repository-panel" :aria-label="t('team_activity.repository_activity')">
           <div class="panel-heading">
             <div>
-              <h2 v-text="t('team_activity.methodology')" />
-              <p v-text="t('team_activity.rolling_window')" />
+              <h2 v-text="t('team_activity.repository_activity')" />
+              <p v-text="t('team_activity.repository_activity_detail')" />
             </div>
-            <Icon name="info" />
+            <Icon name="repo" />
           </div>
-          <dl class="methodology">
-            <dt v-text="t('team_activity.merged')" />
-            <dd v-text="t('team_activity.pr_method')" />
-            <dt v-text="t('team_activity.commits')" />
-            <dd v-text="t('team_activity.commit_method')" />
-            <dt v-text="t('team_activity.active_days')" />
-            <dd v-text="t('team_activity.days_method')" />
-            <dt v-text="t('team_activity.merge_time')" />
-            <dd v-text="t('team_activity.merge_method')" />
-          </dl>
-          <details class="coverage-details">
+          <ol v-if="summary.repositoryActivity.length" class="repository-ranking">
+            <li v-for="(repo, index) in summary.repositoryActivity" :key="repo.id" class="repository-row">
+              <div class="repository-heading">
+                <span class="repository-position" v-text="number(index + 1)" />
+                <button
+                  type="button"
+                  class="repository-name"
+                  :title="t('team_activity.filter_repository', { name: repo.full_name })"
+                  @click="repoId = String(repo.id)"
+                  v-text="repo.full_name"
+                />
+                <span
+                  class="repository-share"
+                  :title="t('team_activity.activity_share')"
+                  v-text="repositoryShare(repo.status, repo.total, repo.share)"
+                />
+              </div>
+              <div class="repository-bar" aria-hidden="true">
+                <span
+                  class="repository-bar-commit"
+                  :style="{ width: `${summary.events.length ? (repo.commits / summary.events.length) * 100 : 0}%` }"
+                />
+                <span
+                  class="repository-bar-merge"
+                  :style="{ width: `${summary.events.length ? (repo.merged / summary.events.length) * 100 : 0}%` }"
+                />
+              </div>
+              <dl class="repository-metrics">
+                <div>
+                  <dt v-text="t('team_activity.merged')" />
+                  <dd v-text="repositoryCount(repo.status, repo.total, repo.merged)" />
+                </div>
+                <div>
+                  <dt v-text="t('team_activity.commits')" />
+                  <dd v-text="repositoryCount(repo.status, repo.total, repo.commits)" />
+                </div>
+                <div>
+                  <dt v-text="t('team_activity.active_members')" />
+                  <dd v-text="repositoryCount(repo.status, repo.total, repo.members)" />
+                </div>
+                <div>
+                  <dt v-text="t('team_activity.active_days')" />
+                  <dd v-text="repositoryCount(repo.status, repo.total, repo.activeDays)" />
+                </div>
+              </dl>
+              <span
+                v-if="repo.status !== 'complete'"
+                class="repository-incomplete"
+                v-text="repositoryStatus(repo.status)"
+              />
+            </li>
+          </ol>
+          <div v-else class="chart-empty" v-text="t('team_activity.no_records')" />
+          <div class="repository-footer">
+            <span v-text="t('team_activity.activity_share')" />
+            <button v-if="repoId" type="button" @click="repoId = ''" v-text="t('team_activity.all_repositories')" />
+          </div>
+          <details v-if="report.partial" class="coverage-details">
             <summary v-text="t('team_activity.coverage')" />
             <ul>
               <li v-for="repo in report.repositories" :key="repo.id">
@@ -322,12 +413,10 @@
                     v-text="repositoryStatus(repo.status)"
                   />
                 </div>
-                <p v-text="repo.default_branch || t('team_activity.default_branch')" />
                 <p v-if="repo.issues.length" class="scope-issue" v-text="t('team_activity.scope_issue')" />
               </li>
             </ul>
           </details>
-          <p class="data-note" v-text="t('team_activity.data_note')" />
         </section>
       </div>
     </template>
@@ -363,7 +452,9 @@ const loading = ref(false);
 const errorMessage = ref('');
 const memberSearch = ref('');
 const rankBy = ref<'merged' | 'commits' | 'activeDays'>('merged');
-const recentLimit = ref(8);
+const paginationEllipsis = '…';
+const recentPageSize = 8;
+const recentPage = ref(1);
 let generation = 0;
 const summary = computed(() =>
   report.value ? summarizeActivity(report.value, timeZone.value, excludeBots.value) : undefined,
@@ -373,11 +464,24 @@ const rankedMembers = computed(() =>
     member.login.toLowerCase().includes(memberSearch.value.toLowerCase()),
   ),
 );
-const recentEvents = computed(() =>
-  [...(summary.value?.events ?? [])]
-    .sort((a, b) => Date.parse(b.occurred_at) - Date.parse(a.occurred_at))
-    .slice(0, recentLimit.value),
+const sortedRecentEvents = computed(() =>
+  [...(summary.value?.events ?? [])].sort((a, b) => Date.parse(b.occurred_at) - Date.parse(a.occurred_at)),
 );
+const recentPageCount = computed(() => Math.max(1, Math.ceil(sortedRecentEvents.value.length / recentPageSize)));
+const recentEvents = computed(() =>
+  sortedRecentEvents.value.slice((recentPage.value - 1) * recentPageSize, recentPage.value * recentPageSize),
+);
+const recentPageNumbers = computed(() =>
+  [...new Set([1, recentPage.value - 1, recentPage.value, recentPage.value + 1, recentPageCount.value])]
+    .filter((page) => page >= 1 && page <= recentPageCount.value)
+    .sort((a, b) => a - b),
+);
+watch(excludeBots, () => {
+  recentPage.value = 1;
+});
+watch(recentPageCount, (count) => {
+  recentPage.value = Math.min(recentPage.value, count);
+});
 const collectedRepositories = computed(
   () => report.value?.repositories.filter((repo) => repo.status === 'complete').length ?? 0,
 );
@@ -443,6 +547,15 @@ const metrics = computed(() => {
 function number(value: number): string {
   return new Intl.NumberFormat(locale.value).format(value);
 }
+function percentage(value: number): string {
+  return new Intl.NumberFormat(locale.value, { style: 'percent', maximumFractionDigits: 1 }).format(value);
+}
+function repositoryShare(status: TeamActivityRepository['status'], total: number, share: number): string {
+  return status !== 'complete' && total === 0 ? '—' : percentage(share);
+}
+function repositoryCount(status: TeamActivityRepository['status'], total: number, value: number): string {
+  return status !== 'complete' && total === 0 ? '—' : number(value);
+}
 function hours(value: number | null): string {
   return value === null
     ? '—'
@@ -497,7 +610,7 @@ async function load() {
   const request = ++generation;
   loading.value = true;
   errorMessage.value = '';
-  recentLimit.value = 8;
+  recentPage.value = 1;
   try {
     const result = await apiClient.getTeamActivity(days.value, repoId.value ? Number(repoId.value) : undefined);
     if (request === generation) {
@@ -1048,7 +1161,17 @@ h1 {
 .team-bottom-grid {
   display: grid;
   grid-template-columns: 1.4fr 1fr;
+  align-items: stretch;
   gap: 20px;
+}
+.recent-panel,
+.repository-panel {
+  display: flex;
+  flex-direction: column;
+}
+.recent-list,
+.repository-ranking {
+  flex: 1;
 }
 .recent-list {
   list-style: none;
@@ -1122,29 +1245,154 @@ h1 {
   height: 8px;
   background: var(--team-border);
 }
-.more-events {
-  width: 100%;
-  padding: 12px;
+.recent-pagination {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+  padding: 12px 16px;
   border-top: 1px solid var(--team-border);
+  font-size: 11px;
+}
+.pagination-range {
+  color: var(--team-muted);
+  font-variant-numeric: tabular-nums;
+}
+.pagination-controls {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+}
+.pagination-controls button {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 28px;
+  height: 28px;
+  padding: 0 5px;
+  border: 1px solid transparent;
+  border-radius: 4px;
+  cursor: pointer;
+  color: var(--wp-text-100);
+  font-size: 11px;
+  font-variant-numeric: tabular-nums;
+}
+.pagination-controls button:hover:not(:disabled) {
+  background: var(--wp-background-200);
+}
+.pagination-controls button[aria-current='page'] {
+  color: var(--wp-accent);
+  background: var(--wp-accent-soft);
+  border-color: var(--wp-kind-ci-border);
+  font-weight: 600;
+}
+.pagination-controls button:disabled {
+  cursor: not-allowed;
+  opacity: 0.35;
+}
+.pagination-controls :deep(svg) {
+  width: 14px;
+  height: 14px;
+}
+.pagination-ellipsis {
+  color: var(--team-muted);
+  padding: 0 2px;
+}
+
+.repository-ranking {
+  list-style: none;
+  padding: 0 22px;
+  margin: 0;
+}
+.repository-row {
+  border-top: 1px solid var(--team-border);
+  padding: 20px 0;
+}
+.repository-heading {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  min-width: 0;
+}
+.repository-position {
+  color: var(--team-muted);
+  font-size: 11px;
+  min-width: 16px;
+  font-variant-numeric: tabular-nums;
+}
+.repository-name {
+  min-width: 0;
+  text-align: left;
+  color: var(--wp-text-200);
   font-size: 12px;
+  font-weight: 600;
+  overflow-wrap: anywhere;
+  cursor: pointer;
+}
+.repository-name:hover {
+  color: var(--wp-accent);
+  text-decoration: underline;
+}
+.repository-share {
+  margin-left: auto;
+  flex-shrink: 0;
+  font-size: 12px;
+  color: var(--wp-accent);
+  font-weight: 600;
+  font-variant-numeric: tabular-nums;
+}
+.repository-bar {
+  display: flex;
+  height: 6px;
+  overflow: hidden;
+  border-radius: 3px;
+  margin: 12px 0 14px 26px;
+  background: var(--wp-background-300);
+}
+.repository-bar-commit {
+  background: var(--team-commit);
+}
+.repository-bar-merge {
+  background: var(--team-merge);
+}
+.repository-metrics {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 8px;
+  margin-left: 26px;
+}
+.repository-metrics dt {
+  color: var(--team-muted);
+  font-size: 10px;
+  margin-bottom: 5px;
+}
+.repository-metrics dd {
+  color: var(--wp-text-200);
+  font-size: 17px;
+  font-weight: 600;
+  font-variant-numeric: tabular-nums;
+}
+.repository-incomplete {
+  display: block;
+  margin: 10px 0 0 26px;
+  color: var(--team-muted);
+  font-size: 10px;
+}
+.repository-footer {
+  padding: 14px 22px;
+  font-size: 10px;
+  color: var(--team-muted);
+  display: flex;
+  justify-content: space-between;
+  gap: 12px;
+  border-top: 1px solid var(--team-border);
+}
+.repository-footer button {
   color: var(--wp-accent);
   cursor: pointer;
 }
-.methodology {
-  padding: 0 22px;
-}
-.methodology dt {
-  font-size: 11px;
-  font-weight: 600;
-  color: var(--wp-text-200);
-  margin-bottom: 4px;
-}
-.methodology dd {
-  font-size: 10px;
-  color: var(--team-muted);
-  line-height: 1.8;
-  margin-bottom: 13px;
-}
+
 .coverage-details {
   padding: 0 22px;
   font-size: 11px;
@@ -1188,12 +1436,6 @@ h1 {
 }
 .scope-issue {
   color: var(--wp-error-100) !important;
-}
-.data-note {
-  padding: 16px 22px;
-  font-size: 10px;
-  color: var(--team-muted);
-  line-height: 1.8;
 }
 .team-state {
   min-height: 420px;

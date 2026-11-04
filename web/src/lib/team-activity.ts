@@ -74,6 +74,20 @@ export function summarizeActivity(report: TeamActivityReport, timeZone: string, 
     ),
     medianMergeHours: median(items.map(mergeHours).filter((value): value is number => value !== null)),
   }));
+  const repositoryActivity = report.repositories
+    .map((repo) => {
+      const items = events.filter((event) => event.repo_id === repo.id);
+      return {
+        ...repo,
+        commits: items.filter((event) => event.kind === 'commit').length,
+        merged: items.filter((event) => event.kind === 'merged_pr').length,
+        members: new Set(items.map((event) => event.actor_id)).size,
+        activeDays: new Set(items.map((event) => localDate(event.occurred_at, timeZone))).size,
+        total: items.length,
+        share: events.length > 0 ? items.length / events.length : 0,
+      };
+    })
+    .sort((a, b) => b.total - a.total || a.full_name.localeCompare(b.full_name));
   const firstDate = localDate(report.since, timeZone);
   const lastDate = localDate(report.until, timeZone);
   const daily: { date: string; commits: number; merged: number }[] = [];
@@ -103,6 +117,7 @@ export function summarizeActivity(report: TeamActivityReport, timeZone: string, 
     members,
     daily,
     heatmap,
+    repositoryActivity,
     commits: events.filter((event) => event.kind === 'commit').length,
     merged: events.filter((event) => event.kind === 'merged_pr').length,
     activeDays: new Set(events.map((event) => localDate(event.occurred_at, timeZone))).size,

@@ -98,6 +98,39 @@ describe('team activity statistics', () => {
     expect(median([3, 1])).toBe(2);
   });
 
+  it('ranks repositories by deduplicated visible events and counts distinct members and local days', () => {
+    const data = report([
+      event(),
+      event(),
+      event({ id: 'pr', kind: 'merged_pr' }),
+      event({ id: 'second-author', actor_id: 'github:2', actor: 'bob' }),
+      event({ id: 'second-repo', repo_id: 2 }),
+      event({ id: 'excluded-bot', repo_id: 2, bot: true }),
+    ]);
+    data.repositories.push({
+      id: 2,
+      full_name: 'team/frontend',
+      default_branch: 'main',
+      status: 'complete',
+      issues: [],
+    });
+    const result = summarizeActivity(data, 'Asia/Shanghai', true).repositoryActivity;
+    expect(result.map((repo) => repo.id)).toEqual([1, 2]);
+    expect(result[0]).toMatchObject({ commits: 2, merged: 1, members: 2, activeDays: 1, total: 3, share: 0.75 });
+    expect(result[1]).toMatchObject({ commits: 1, merged: 0, members: 1, total: 1, share: 0.25 });
+    expect(summarizeActivity(data, 'UTC', false).repositoryActivity[1].total).toBe(2);
+  });
+
+  it('retains repositories with missing coverage and handles no events without NaN shares', () => {
+    const data = report([]);
+    data.partial = true;
+    data.repositories[0].status = 'partial';
+    data.repositories[0].issues = ['commits_http_403'];
+    const [repo] = summarizeActivity(data, 'UTC', true).repositoryActivity;
+    expect(repo).toMatchObject({ status: 'partial', total: 0, share: 0 });
+    expect(repo.issues).toEqual(['commits_http_403']);
+  });
+
   it('handles DST by formatting each event in the selected timezone', () => {
     expect(localDate('2026-11-01T08:30:00Z', 'America/Los_Angeles')).toBe('2026-11-01');
     expect(localDate('2026-11-01T09:30:00Z', 'America/Los_Angeles')).toBe('2026-11-01');
