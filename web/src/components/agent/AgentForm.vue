@@ -78,7 +78,7 @@
       <Button
         :is-loading="isSaving"
         type="submit"
-        color="green"
+        color="blue"
         :text="isEditingAgent ? $t('admin.settings.agents.save') : $t('admin.settings.agents.add')"
       />
     </div>

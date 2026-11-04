@@ -137,7 +137,7 @@
           <Button type="button" color="gray" :text="$t('cancel')" @click="selectedCron = undefined" />
           <Button
             type="submit"
-            color="green"
+            color="blue"
             :is-loading="isSaving"
             :text="isEditingCron ? $t('repo.settings.crons.save') : $t('repo.settings.crons.add')"
             :disabled="!isFormValid"

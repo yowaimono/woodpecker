@@ -5,6 +5,7 @@ interface UserConfig {
   isPipelineFeedOpen: boolean;
   redirectUrl: string;
   collapseLogGroupsByDefault: boolean;
+  showTeamTab: boolean;
 }
 
 const config = useStorage<UserConfig>(
@@ -13,6 +14,7 @@ const config = useStorage<UserConfig>(
     isPipelineFeedOpen: false,
     redirectUrl: '',
     collapseLogGroupsByDefault: true,
+    showTeamTab: true,
   },
   undefined,
   { mergeDefaults: true },

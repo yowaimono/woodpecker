@@ -3,7 +3,7 @@
     <input
       :id="`checkbox-${id}`"
       type="checkbox"
-      class="checkbox border-wp-control-neutral-300 disabled:border-wp-control-neutral-200 disabled:bg-wp-control-neutral-100 dark:disabled:bg-wp-control-neutral-200 checked:border-wp-control-ok-200 checked:bg-wp-control-ok-200 focus-visible:border-wp-control-neutral-400 checked:focus-visible:border-wp-control-ok-300 relative h-5 w-5 shrink-0 cursor-pointer rounded-md border transition-colors duration-150"
+      class="checkbox border-wp-control-neutral-300 disabled:border-wp-control-neutral-200 disabled:bg-wp-control-neutral-100 dark:disabled:bg-wp-control-neutral-200 checked:border-wp-control-info-100 checked:bg-wp-control-info-100 focus-visible:border-wp-control-neutral-400 checked:focus-visible:border-wp-control-info-300 relative h-5 w-5 shrink-0 cursor-pointer rounded-md border transition-colors duration-150"
       :checked="innerValue"
       :disabled="disabled || false"
       @click="innerValue = !innerValue"
@@ -73,5 +73,9 @@ const id = (Math.random() + 1).toString(36).substring(7);
 
 .checkbox:checked::before {
   opacity: 1;
+}
+.checkbox:focus-visible {
+  outline: 2px solid var(--wp-focus-ring);
+  outline-offset: 3px;
 }
 </style>

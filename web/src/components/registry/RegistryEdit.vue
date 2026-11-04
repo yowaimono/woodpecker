@@ -30,7 +30,7 @@
         <Button type="button" color="gray" :text="$t('cancel')" @click="$emit('cancel')" />
         <Button
           type="submit"
-          color="green"
+          color="blue"
           :is-loading="isSaving"
           :text="isEditing ? $t('registries.save') : $t('registries.add')"
         />

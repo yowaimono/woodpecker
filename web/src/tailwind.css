@@ -7,12 +7,12 @@
 @custom-variant dark (&:is(.dark *));
 
 @theme {
-  --color-int-wp-primary-100: #8ad97f;
-  --color-int-wp-primary-200: #68c464;
-  --color-int-wp-primary-300: #4caf50;
-  --color-int-wp-primary-400: #369943;
-  --color-int-wp-primary-500: #248438;
-  --color-int-wp-primary-600: #166e30;
+  --color-int-wp-primary-100: #dfe7ff;
+  --color-int-wp-primary-200: #a8bdff;
+  --color-int-wp-primary-300: #567dff;
+  --color-int-wp-primary-400: #2d5cf6;
+  --color-int-wp-primary-500: #244bd1;
+  --color-int-wp-primary-600: #1d3da8;
 
   --color-int-wp-secondary-100: #4a4b52;
   --color-int-wp-secondary-200: #3c3d3e;
@@ -27,9 +27,9 @@
   --color-int-wp-control-neutral-200: #d1d5db;
   --color-int-wp-control-neutral-300: #9ca3af;
 
-  --color-int-wp-control-info-100: #0e7490;
-  --color-int-wp-control-info-200: #155e75;
-  --color-int-wp-control-info-300: #164e63;
+  --color-int-wp-control-info-100: #2d5cf6;
+  --color-int-wp-control-info-200: #244bd1;
+  --color-int-wp-control-info-300: #1d3da8;
 
   --color-int-wp-control-info-dark-100: #1f6feb;
   --color-int-wp-control-info-dark-200: #1158c7;
@@ -145,12 +145,12 @@
 
   --transition-property-height: max-height;
 
-  --stroke-int-wp-primary-100: #8ad97f;
-  --stroke-int-wp-primary-200: #68c464;
-  --stroke-int-wp-primary-300: #4caf50;
-  --stroke-int-wp-primary-400: #369943;
-  --stroke-int-wp-primary-500: #248438;
-  --stroke-int-wp-primary-600: #166e30;
+  --stroke-int-wp-primary-100: #dfe7ff;
+  --stroke-int-wp-primary-200: #a8bdff;
+  --stroke-int-wp-primary-300: #567dff;
+  --stroke-int-wp-primary-400: #2d5cf6;
+  --stroke-int-wp-primary-500: #244bd1;
+  --stroke-int-wp-primary-600: #1d3da8;
 
   --stroke-int-wp-secondary-200: #434858;
   --stroke-int-wp-secondary-300: #383c4a;
@@ -507,12 +507,12 @@
   --stroke-stone-950: oklch(0.147 0.004 49.25);
   --stroke-black: #000;
   --stroke-white: #fff;
-  --stroke-int-wp-primary-100: #8ad97f;
-  --stroke-int-wp-primary-200: #68c464;
-  --stroke-int-wp-primary-300: #4caf50;
-  --stroke-int-wp-primary-400: #369943;
-  --stroke-int-wp-primary-500: #248438;
-  --stroke-int-wp-primary-600: #166e30;
+  --stroke-int-wp-primary-100: #dfe7ff;
+  --stroke-int-wp-primary-200: #a8bdff;
+  --stroke-int-wp-primary-300: #567dff;
+  --stroke-int-wp-primary-400: #2d5cf6;
+  --stroke-int-wp-primary-500: #244bd1;
+  --stroke-int-wp-primary-600: #1d3da8;
   --stroke-int-wp-secondary-200: #434858;
   --stroke-int-wp-secondary-300: #383c4a;
   --stroke-int-wp-secondary-400: #303440;
@@ -589,12 +589,12 @@
   --stroke-wp-link-100: var(--wp-link-100);
   --stroke-wp-link-200: var(--wp-link-200);
 
-  --fill-int-wp-primary-100: #8ad97f;
-  --fill-int-wp-primary-200: #68c464;
-  --fill-int-wp-primary-300: #4caf50;
-  --fill-int-wp-primary-400: #369943;
-  --fill-int-wp-primary-500: #248438;
-  --fill-int-wp-primary-600: #166e30;
+  --fill-int-wp-primary-100: #dfe7ff;
+  --fill-int-wp-primary-200: #a8bdff;
+  --fill-int-wp-primary-300: #567dff;
+  --fill-int-wp-primary-400: #2d5cf6;
+  --fill-int-wp-primary-500: #244bd1;
+  --fill-int-wp-primary-600: #1d3da8;
 
   --fill-int-wp-secondary-200: #434858;
   --fill-int-wp-secondary-300: #383c4a;
@@ -951,12 +951,12 @@
   --fill-stone-950: oklch(0.147 0.004 49.25);
   --fill-black: #000;
   --fill-white: #fff;
-  --fill-int-wp-primary-100: #8ad97f;
-  --fill-int-wp-primary-200: #68c464;
-  --fill-int-wp-primary-300: #4caf50;
-  --fill-int-wp-primary-400: #369943;
-  --fill-int-wp-primary-500: #248438;
-  --fill-int-wp-primary-600: #166e30;
+  --fill-int-wp-primary-100: #dfe7ff;
+  --fill-int-wp-primary-200: #a8bdff;
+  --fill-int-wp-primary-300: #567dff;
+  --fill-int-wp-primary-400: #2d5cf6;
+  --fill-int-wp-primary-500: #244bd1;
+  --fill-int-wp-primary-600: #1d3da8;
   --fill-int-wp-secondary-200: #434858;
   --fill-int-wp-secondary-300: #383c4a;
   --fill-int-wp-secondary-400: #303440;

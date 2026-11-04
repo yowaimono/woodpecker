@@ -126,7 +126,7 @@
     <div class="flex gap-2">
       <Button :text="$t('cancel')" :to="{ name: 'admin-settings-forges' }" />
 
-      <Button :is-loading="isSaving" type="submit" color="green" :text="isNew ? $t('add') : $t('save')" />
+      <Button :is-loading="isSaving" type="submit" color="blue" :text="isNew ? $t('add') : $t('save')" />
     </div>
   </form>
 </template>

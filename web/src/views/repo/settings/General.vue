@@ -158,7 +158,7 @@
       <Button
         type="submit"
         class="mr-auto"
-        color="green"
+        color="blue"
         :is-loading="isSaving"
         :text="$t('repo.settings.general.save')"
       />

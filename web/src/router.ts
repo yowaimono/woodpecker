@@ -16,6 +16,12 @@ declare module 'vue-router' {
 
 const routes: RouteRecordRaw[] = [
   {
+    path: '/team',
+    name: 'team-activity',
+    component: (): Component => import('~/views/TeamActivity.vue'),
+    meta: { authentication: 'required' },
+  },
+  {
     path: '/',
     name: 'home',
     redirect: { name: 'repos' },
