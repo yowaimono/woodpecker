@@ -77,7 +77,7 @@ func GetTeamActivity(c *gin.Context) {
 	defer cancel()
 	forge.Refresh(ctx, provider, s, user)
 	endpoint := "https://api.github.com"
-	if host := strings.TrimRight(provider.URL(), "/"); host != "https://github.com" {
+	if host := strings.TrimRight(provider.Config().URL, "/"); host != "https://github.com" {
 		endpoint = host + "/api/v3"
 	}
 	until := time.Now().UTC()

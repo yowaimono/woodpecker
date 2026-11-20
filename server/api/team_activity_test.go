@@ -13,6 +13,7 @@ import (
 	"github.com/stretchr/testify/mock"
 	"github.com/stretchr/testify/require"
 
+	"go.woodpecker-ci.org/woodpecker/v3/pipeline/frontend/metadata"
 	"go.woodpecker-ci.org/woodpecker/v3/server"
 	forge_mocks "go.woodpecker-ci.org/woodpecker/v3/server/forge/mocks"
 	"go.woodpecker-ci.org/woodpecker/v3/server/model"
@@ -68,7 +69,7 @@ func TestTeamActivityCannotReadUnrelatedRepository(t *testing.T) {
 func TestTeamActivityExcludesOtherForgeAndReturnsEmptyScope(t *testing.T) {
 	c, rec, user, s, provider := teamActivityContext(t, "?days=7")
 	s.On("RepoList", user, true, true, mock.Anything).Return([]*model.Repo{{ID: 1, ForgeID: 9, Owner: "other", Name: "private", FullName: "other/private"}}, nil)
-	provider.On("URL").Return("https://github.com")
+	provider.On("Config").Return(metadata.Forge{URL: "https://github.com"})
 	GetTeamActivity(c)
 	require.Equal(t, http.StatusOK, rec.Code)
 	require.Contains(t, rec.Body.String(), `"repositories":[]`)
@@ -97,7 +98,7 @@ func TestTeamActivityCollectsAuthorizedScopeWithCallerToken(t *testing.T) {
 		}
 	}))
 	defer upstream.Close()
-	provider.On("URL").Return(upstream.URL)
+	provider.On("Config").Return(metadata.Forge{URL: upstream.URL})
 	GetTeamActivity(c)
 	require.Equal(t, http.StatusOK, rec.Code)
 	require.Contains(t, rec.Body.String(), `"partial":false`)
